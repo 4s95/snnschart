@@ -74,7 +74,7 @@
                     var str = $("<tr></tr>");
 
                     // Level
-                    $("<td width='25%'>" + mark + x + "</td>").appendTo(str);
+                    $("<td width='5%'>" + mark + x + "</td>").appendTo(str);
 
                     // Title
                     $("<td width='25%'>" +
@@ -85,9 +85,23 @@
                     // Artist
                     $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
 
+
+                    //url
+                    $("<td width='10%'>" + info[i].url + "</td>").appendTo(str);
+
+                    //url2
+                    $("<td width='10%'>" + info[i].url_diff + "</td>").appendTo(str);
+
+                    
+
                     // Comment
                     $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
                     str.appendTo(obj);
+
+                    //link1
+                    
+
+                    
                     count++;
 
 
