@@ -2,5 +2,5 @@
 "name" : "SNN's chart",
 "symbol" : "sc",
 "data_url" : "https://script.google.com/macros/s/AKfycbyyIq-_t14_p5LbkZrJX1zUPL3ndMJayDE3ea5cLMRc3CZqQBSrD7OIR85KQAl5PBkCOg/exec"
-
+"level_order" : [1,2,3,4,5,6,7,8,9,10,11,12] 
 }
