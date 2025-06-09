@@ -55,8 +55,9 @@
                 var obj = $("#table_int");
 
                 obj.html("");
-                $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>Comment</th></tr></thead><tbody>")
-                    .appendTo(obj);
+               
+                $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>Comment</th><th>URL</th><th>URL_DIFF</th></tr></thead><tbody>").appendTo(obj);
+               
                 var obj_sep = null;
                 for (var i = 0; i < info.length; i++) {
                     if (x != info[i].level) {
@@ -71,24 +72,30 @@
                         x = info[i].level;
                     }
 
-                    var str = $("<tr></tr>");
+             var str = $("<tr></tr>");
 
-                    // Level
-                    $("<td width='25%'>" + mark + x + "</td>").appendTo(str);
+// Level
+$("<td width='15%'>" + mark + x + "</td>").appendTo(str);
 
-                    // Title
-                    $("<td width='25%'>" +
-                        "<a href='http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5=" + info[
-                            i]
-                        .md5 + "' target='_blank'>" + info[i].title + "</a></td>").appendTo(str);
+// Title（リンク付き）
+$("<td width='15%'>" +
+    "<a href='http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5=" + info[i].md5 + "' target='_blank'>" + info[i].title + "</a></td>").appendTo(str);
 
-                    // Artist
-                    $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
+// Artist
+$("<td width='15%'>" + info[i].artist + "</td>").appendTo(str);
 
-                    // Comment
-                    $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
-                    str.appendTo(obj);
-                    count++;
+// Comment
+$("<td width='15%'>" + info[i].comment + "</td>").appendTo(str);
+
+// URL
+$("<td width='20%'>" + 
+    (info[i].url ? ("<a href='" + info[i].url + "' target='_blank'>Link</a>") : "N/A") +
+    "</td>").appendTo(str);
+
+// URL_DIFF
+$("<td width='20%'>" + 
+    (info[i].url_diff ? ("<a href='" + info[i].url_diff + "' target='_blank'>Diff</a>") : "N/A") +
+    "</td>").appendTo(str)
 
 
                 }
