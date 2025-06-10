@@ -86,10 +86,10 @@
 
 
                     //url
-                    $("<td width='10%'>" +  info[i].url + "</td>").appendTo(str);
+                    $("<td width='10%'>" +  "<a href='" + (data[i].url "") + "' target='_blank'>DL</a>"</td>").appendTo(str);
 
                     //url_diff
-                    $("<td width='10%'>" + info[i].url_diff + "</td>").appendTo(str);
+                    $("<td width='10%'>" + "<a href='" + (data[i].url_diff "") + "' target='_blank'>DL</a></td>")).appendTo(str);
 
                     // Comment
                     $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
