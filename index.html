@@ -43,7 +43,10 @@
             $(document).ready(function () {
                 $.getJSON($("meta[name=bmstable]").attr("content"), function (header) {
                     $.getJSON(header.data_url, function (information) {
-                        makeBMSTable(information, header.symbol);
+                        if(header["level_order"])
+                        {makeBMSTable(information,header.symbol,header["level_order"]);}
+                        else
+                        {makeBMSTable(information, header.symbol);}
                     });
                 });
             });
