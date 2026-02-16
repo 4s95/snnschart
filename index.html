@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<style>
+.custom-alert {
+    background-color: #000000;   /* 背景黒 */
+    color: #ffffff;              /* 文字白 */
+    border: 2px solid #00aaff;   /* ベース青 */
+    border-radius: 8px;
+
+    /* ネオン発光 */
+    box-shadow:
+        0 0 5px #00aaff,
+        0 0 10px #00aaff,
+        0 0 20px #00aaff,
+        0 0 40px rgba(0,170,255,0.6);
+}
+</style>
+
+
 <head>
     <title>SNN's chart</title>
     <meta charset="UTF-8">
@@ -26,7 +43,7 @@
 
     <div class="container">
 
-        <div class="alert alert-success mb-3" role="alert">
+        <div class="alert custom-alert mb-3" role="alert">
             <p>scN = stN。</p>
             <p>差分名[+]はst系ではありますが個人差寄りの譜面となっています。</p>
             <p>sc?はsupernova系の譜面をまとめたものです。</p>
