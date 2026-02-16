@@ -22,6 +22,7 @@ body {
         0 0 18px rgba(30,144,255,0.3);
 }
 </style>
+    
 
 
 <head>
@@ -53,6 +54,21 @@ body {
     border: 1px solid rgba(30,144,255,0.9);
     transition: all 0.2s ease;
 }
+
+/* テーブル行のホバーネオンなど既存CSSの後に追加 */
+.level-separator {
+    background-color: #0a0a0a !important; /* 少し黒寄り */
+    color: #a0dfff !important;            /* 薄い青文字 */
+    text-align: center;
+    font-weight: bold;
+
+    /* ネオン発光 */
+    box-shadow:
+        0 0 6px rgba(30,144,255,0.4),
+        0 0 12px rgba(30,144,255,0.3),
+        0 0 18px rgba(30,144,255,0.2);
+}
+
 </style>
 
 </head>
@@ -107,7 +123,7 @@ body {
                             obj_sep.html("<td colspan='6'>" + "<b>" + mark + x + " (" + count +
                                 "譜面)</b></td>");
                         }
-                        obj_sep = $("<tr class='table-dark' style='text-align:center' id='" + mark + info[i].level +
+                        obj_sep = $("<tr class='level-separator' style='text-align:center' id='" + mark + info[i].level +
                             "'></tr>");
                         obj_sep.appendTo(obj);
                         count = 0;
