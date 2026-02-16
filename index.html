@@ -106,7 +106,7 @@
 
         <!-- 難易度表本体 -->
         <div>
-            <table class="table table-dark table-striped table-hover" id="table_int">
+            <table class="table table-dark table-striped table-hover" id="table_int" style="display:none;" >
             </table>
         </div>
 
@@ -161,6 +161,8 @@
                 if (obj_sep != null) {
                     obj_sep.html("<td colspan='6'><b>" + mark + x + " (" + count + "譜面)</b></td>");
                 }
+                obj.hide().fadeIn(800); // 0.8秒でフェードイン
+
             }
         </script>
     </div>
