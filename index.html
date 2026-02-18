@@ -161,10 +161,37 @@
 
                     detailBtn.on("click", function () {
 
-                    var bpm = info[i].bpm || "null";
-                    var notes = info[i].notes || 0;
-                    var total = info[i].total || 0;
-                    var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
+                    var title = info[i].title;   // ← 追加
+                    var data = sheetData[info[i].md5];
+
+                    if (!data) {
+
+                        $("#modalContent").html(
+                        "<p><b>Title:</b> " + title + "</p>" +
+                        "<hr>" +
+                        "<p>データがありません</p>"
+                         ); }
+
+                    else {
+
+                        var bpm = data.bpm || "null";
+                        var notes = data.notes || 0;
+                        var total = data.total || 0;
+                        var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
+
+        $("#modalContent").html(
+            "<p style='font-size:18px; color:#00aaff;'><b>" + title + "</b></p>" +
+            "<hr>" +
+            "<p><b>BPM:</b> " + bpm + "</p>" +
+            "<p><b>Notes:</b> " + notes + "</p>" +
+            "<p><b>Total:</b> " + total + "</p>" +
+            "<p><b>Total / Notes:</b> " + ratio + "</p>"
+        );
+    }
+
+    var modal = new bootstrap.Modal(document.getElementById('detailModal'));
+    modal.show();
+});
 
     $("#modalContent").html(
         "<p><b>BPM:</b> " + bpm + "</p>" +
