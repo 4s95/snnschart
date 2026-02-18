@@ -28,6 +28,22 @@ body { background-color: #121212 !important; }
     box-shadow:0 0 6px rgba(30,144,255,0.4),0 0 12px rgba(30,144,255,0.3),0 0 20px rgba(30,144,255,0.2);}
 .level-separator:hover { background-color: #0a0a0a !important; box-shadow:0 0 6px rgba(30,144,255,0.4),0 0 12px rgba(30,144,255,0.3),0 0 20px rgba(30,144,255,0.2);
     border: 2px solid rgba(30,144,255,0.6); transform: none;}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.rainbow-text {
+  font-weight: bold;
+  font-size: 16px;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 3s linear infinite;
+}
 </style>
 </head>
 
@@ -41,7 +57,7 @@ body { background-color: #121212 !important; }
 <div class="container">
 <div class="alert custom-alert mb-3" role="alert">
 <p>scN = stN</p>
-<p>sc?はsupernova系の譜面をまとめたものです。10</p>
+<p>sc?はsupernova系の譜面をまとめたものです。</p>
 <p>(2/14)<a href='https://drive.google.com/file/d/1pL3yca9pcM8BCtuJkujZScNdoG7u-RlG/view?usp=drive_link'>段位認定</a>を★★,★★+,(^^)の三段階で実装しました。</p>
 <p>LR2は上記リンク先のファイルを本体に追加、beatorajaは本体に追加されているこの難易度表を更新すれば反映されます</p>
 
@@ -102,19 +118,19 @@ function makeBMSTable(info, mark) {
             let ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
             let otherTable = info[i].other_table;
 
-            let titleStyle = otherTable ? 
-        "background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); -webkit-background-clip: text; color: transparent; font-weight:bold;" 
-        : "color:#00aaff; font-weight:bold;";
+            let titleHtml = otherTable 
+    ? "<b class='rainbow-text'>" + title + "</b>" 
+    : "<b style='color:#00aaff; font-weight:bold;'>" + title + "</b>";
 
+$("#modalContent").html(
+    "<p style='font-size:16px;'>" + titleHtml + "</p>" +
+    "<p><b>BPM:</b> " + bpm + "</p>" +
+    "<p><b>Notes:</b> " + notes + "</p>" +
+    "<p><b>Total:</b> " + total + "</p>" +
+    "<p><b>Total / Notes:</b> " + ratio + "</p>" +
+    "<p><b>other table:</b> " + otherTable + "</p>"
+);
 
-            $("#modalContent").html(
-                "<p style='font-size:16px; color:#00aaff;'><b>" + title + "</b></p>" +
-                "<p><b>BPM:</b> " + bpm + "</p>" +
-                "<p><b>Notes:</b> " + notes + "</p>" +
-                "<p><b>Total:</b> " + total + "</p>" +
-                "<p><b>Total / Notes:</b> " + ratio + "</p>" +
-                "<p><b>other table:</b> " + otherTable + "</p>"
-            );
 
             var modal = new bootstrap.Modal(document.getElementById('detailModal'));
             modal.show();
