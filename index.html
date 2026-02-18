@@ -126,10 +126,10 @@
 
                 obj.html("");
 
-                $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th></tr></thead><tbody>").appendTo(obj);
+               $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>詳細</th></tr></thead><tbody>").appendTo(obj);
 
                 var obj_sep = null;
-                for (var i = 0; i < info.length; i++) {
+                for (let i = 0; i < info.length; i++) {
                     if (x != info[i].level) {
                         if (obj_sep != null) {
                             obj_sep.html("<td colspan='6'><b>" + mark + x + " (" + count + "譜面)</b></td>");
@@ -154,6 +154,30 @@
                     // Comment
                     $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
 
+                    // 詳細ボタン
+                    var detailBtn = $("<button class='btn btn-sm btn-outline-info'>詳細</button>");
+                    var detailTd = $("<td width='5%'></td>").append(detailBtn);
+                    detailTd.appendTo(str);
+
+                    detailBtn.on("click", function () {
+
+                    var bpm = info[i].bpm || "不明";
+                    var notes = info[i].notes || 0;
+                    var total = info[i].total || 0;
+                    var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
+
+    $("#modalContent").html(
+        "<p><b>BPM:</b> " + bpm + "</p>" +
+        "<p><b>Notes:</b> " + notes + "</p>" +
+        "<p><b>Total:</b> " + total + "</p>" +
+        "<p><b>Total / Notes:</b> " + ratio + "</p>"
+    );
+
+    var modal = new bootstrap.Modal(document.getElementById('detailModal'));
+    modal.show();
+});
+
+
                     str.appendTo(obj);
                     count++;
                 }
@@ -166,5 +190,19 @@
             }
         </script>
     </div>
+<!-- 詳細モーダル -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-info">
+        <h5 class="modal-title">譜面詳細</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalContent">
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
