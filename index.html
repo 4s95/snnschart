@@ -2,217 +2,136 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="bmstable" content="header.json" />
-    <title>SNN's chart</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="bmstable" content="header.json" />
+<title>SNN's chart</title>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
-    <!-- Bootstrap CSS & JS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
-    </script>
+<!-- Bootstrap CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- ページ全体のスタイル -->
-    <style>
-        body {
-            background-color: #121212 !important;
-        }
-
-        /* カスタムアラート */
-        .custom-alert {
-            background-color: #000000;
-            color: #ffffff;
-            border: 2px solid #00aaff;
-            border-radius: 8px;
-            box-shadow:
-                0 0 4px rgba(30, 144, 255, 0.7),
-                0 0 10px rgba(30, 144, 255, 0.5),
-                0 0 18px rgba(30, 144, 255, 0.3);
-        }
-
-        /* 通常行ホバー（ネオン） */
-        #table_int tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        #table_int tbody tr:not(.level-separator):hover {
-            position: relative;
-            z-index: 1;
-            background-color: rgba(30, 144, 255, 0.08) !important;
-            box-shadow:
-                0 0 6px rgba(30, 144, 255, 0.8),
-                0 0 14px rgba(30, 144, 255, 0.5);
-            border: 1px solid rgba(30, 144, 255, 0.9);
-            transition: all 0.2s ease;
-        }
-        #table_int thead {
-    position: sticky;
-    top: 0;
-    background-color: #1a1a1a;
-    z-index: 2;
-}
-
-        /* レベル区切り行（淡い青ネオン・枠付き・カーソルでぶれない） */
-        .level-separator {
-            background-color: #0a0a0a !important;
-            color: #a0dfff !important;
-            text-align: center;
-            font-weight: bold;
-            border: 2px solid rgba(30, 144, 255, 0.6);
-            border-radius: 4px;
-            box-shadow:
-                0 0 6px rgba(30, 144, 255, 0.4),
-                0 0 12px rgba(30, 144, 255, 0.3),
-                0 0 20px rgba(30, 144, 255, 0.2);
-        }
-
-        /* 区切り行のホバー無効化 */
-        .level-separator:hover {
-            background-color: #0a0a0a !important;
-            box-shadow:
-                0 0 6px rgba(30, 144, 255, 0.4),
-                0 0 12px rgba(30, 144, 255, 0.3),
-                0 0 20px rgba(30, 144, 255, 0.2);
-            border: 2px solid rgba(30, 144, 255, 0.6);
-            transform: none;
-        }
-        
-    </style>
+<style>
+body { background-color: #121212 !important; }
+.custom-alert { background-color: #000; color: #fff; border: 2px solid #00aaff; border-radius: 8px;
+    box-shadow:0 0 4px rgba(30,144,255,0.7),0 0 10px rgba(30,144,255,0.5),0 0 18px rgba(30,144,255,0.3); }
+#table_int tbody tr { transition: all 0.2s ease; }
+#table_int tbody tr:not(.level-separator):hover { position: relative; z-index: 1; background-color: rgba(30,144,255,0.08) !important;
+    box-shadow:0 0 6px rgba(30,144,255,0.8),0 0 14px rgba(30,144,255,0.5); border: 1px solid rgba(30,144,255,0.9); }
+#table_int thead { position: sticky; top: 0; background-color: #1a1a1a; z-index: 2; }
+.level-separator { background-color: #0a0a0a !important; color: #a0dfff !important; text-align: center; font-weight: bold;
+    border: 2px solid rgba(30,144,255,0.6); border-radius: 4px;
+    box-shadow:0 0 6px rgba(30,144,255,0.4),0 0 12px rgba(30,144,255,0.3),0 0 20px rgba(30,144,255,0.2);}
+.level-separator:hover { background-color: #0a0a0a !important; box-shadow:0 0 6px rgba(30,144,255,0.4),0 0 12px rgba(30,144,255,0.3),0 0 20px rgba(30,144,255,0.2);
+    border: 2px solid rgba(30,144,255,0.6); transform: none;}
+</style>
 </head>
 
 <body>
-    <header class="mb-3">
-        <nav class="navbar navbar-dark bg-dark">
-            <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">SNN's chart</span>
-            </div>
-        </nav>
-    </header>
+<header class="mb-3">
+<nav class="navbar navbar-dark bg-dark">
+<div class="container-fluid"><span class="navbar-brand mb-0 h1">SNN's chart</span></div>
+</nav>
+</header>
 
-    <div class="container">
+<div class="container">
+<div class="alert custom-alert mb-3" role="alert">
+<p>scN = stN</p>
+<p>sc?はsupernova系の譜面をまとめたものです。</p>
+</div>
 
-        <div class="alert custom-alert mb-3" role="alert">
-            <p>scN = stN</p>
-            <p>sc?はsupernova系の譜面をまとめたものです。</p>
-            <p>(2/14)<a href='https://drive.google.com/file/d/1pL3yca9pcM8BCtuJkujZScNdoG7u-RlG/view?usp=drive_link'>段位認定</a>を★★,★★+,(^^)の三段階で実装しました。</p>
-            <p>LR2は上記リンク先のファイルを本体に追加、beatorajaは本体に追加されているこの難易度表を更新すれば反映されます1</p>
-        </div>
+<div>
+<table class="table table-dark table-striped table-hover" id="table_int" style="display:none;"></table>
+</div>
 
-        <!-- 難易度表本体 -->
-        <div>
-            <table class="table table-dark table-striped table-hover" id="table_int" style="display:none;" >
-            </table>
-        </div>
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $.getJSON($("meta[name=bmstable]").attr("content"), function (header) {
-                    $.getJSON(header.data_url, function (information) {
-                        makeBMSTable(information, header.symbol);
-                    });
-                });
-            });
-
-            function makeBMSTable(info, mark) {
-                var x = "";
-                var count = 0;
-                var obj = $("#table_int");
-
-                obj.html("");
-
-               $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>info</th></tr></thead><tbody>").appendTo(obj);
-
-                var obj_sep = null;
-                for (let i = 0; i < info.length; i++) {
-                    if (x != info[i].level) {
-                        if (obj_sep != null) {
-                            obj_sep.html("<td colspan='7'><b>" + mark + x + " (" + count + "譜面)</b></td>");
-                        }
-                        obj_sep = $("<tr class='level-separator' id='" + mark + info[i].level + "'></tr>");
-                        obj_sep.appendTo(obj);
-                        count = 0;
-                        x = info[i].level;
-                    }
-
-                    var str = $("<tr></tr>");
-                    // Level
-                    $("<td width='5%'>" + mark + x + "</td>").appendTo(str);
-                    // Title
-                    $("<td width='25%'>" +
-                        "<a href='http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5=" + info[i].md5 + "' target='_blank'>" + info[i].title + "</a></td>").appendTo(str);
-                    // Artist
-                    $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
-                    // DLリンク
-                    $("<td width='5%'><a href='" + info[i].url + "' target='_blank'>DL</a></td>").appendTo(str);
-                    $("<td width='5%'><a href='" + info[i].url_diff + "' target='_blank'>DL</a></td>").appendTo(str);
-                    // Comment
-                    $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
-
-                    // 詳細ボタン
-                    var detailBtn = $("<button class='btn btn-sm btn-outline-info'>info</button>");
-                    var detailTd = $("<td width='10%'></td>").append(detailBtn);
-                    detailTd.appendTo(str);
-
-detailBtn.on("click", function () {
-    var title = info[i].title;   // 曲名
-    var data = sheetData[info[i].md5];
-
-    if (!data) {
-        $("#modalContent").html(
-            "<p><b>Title:</b> " + title + "</p>" +
-            "<p>データがありません</p>"
-        );
-    } else {
-        var bpm = data.bpm || "null";
-        var notes = data.notes || 0;
-        var total = data.total || 0;
-        var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
-
-        $("#modalContent").html(
-            "<p style='font-size:16px; color:#00aaff;'><b>" + title + "</b></p>" +
-            "<p><b>BPM:</b> " + bpm + "</p>" +
-            "<p><b>Notes:</b> " + notes + "</p>" +
-            "<p><b>Total:</b> " + total + "</p>" +
-            "<p><b>Total / Notes:</b> " + ratio + "</p>"
-        );
-    }
-
-    var modal = new bootstrap.Modal(document.getElementById('detailModal'));
-    modal.show();
+<script type="text/javascript">
+$(document).ready(function () {
+    $.getJSON($("meta[name=bmstable]").attr("content"), function (header) {
+        $.getJSON(header.data_url, function (information) {
+            makeBMSTable(information, header.symbol);
+        });
+    });
 });
 
+function makeBMSTable(info, mark) {
+    var x = "";
+    var count = 0;
+    var obj = $("#table_int");
+    obj.html("");
 
-  
+    $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>info</th></tr></thead><tbody>").appendTo(obj);
 
-
-                    str.appendTo(obj);
-                    count++;
-                }
-
-                if (obj_sep != null) {
-                    obj_sep.html("<td colspan='7'><b>" + mark + x + " (" + count + "譜面)</b></td>");
-                }
-                obj.hide().fadeIn(800); // 0.8秒でフェードイン
-
+    var obj_sep = null;
+    for (let i = 0; i < info.length; i++) {
+        if (x != info[i].level) {
+            if (obj_sep != null) {
+                obj_sep.html("<td colspan='7'><b>" + mark + x + " (" + count + "譜面)</b></td>");
             }
-        </script>
-    </div>
+            obj_sep = $("<tr class='level-separator' id='" + mark + info[i].level + "'></tr>");
+            obj_sep.appendTo(obj);
+            count = 0;
+            x = info[i].level;
+        }
+
+        var str = $("<tr></tr>");
+        $("<td width='5%'>" + mark + x + "</td>").appendTo(str);
+        $("<td width='25%'><a href='http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5=" + info[i].md5 + "' target='_blank'>" + info[i].title + "</a></td>").appendTo(str);
+        $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
+        $("<td width='5%'><a href='" + info[i].url + "' target='_blank'>DL</a></td>").appendTo(str);
+        $("<td width='5%'><a href='" + info[i].url_diff + "' target='_blank'>DL</a></td>").appendTo(str);
+        $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
+
+        // infoボタン
+        let detailBtn = $("<button class='btn btn-sm btn-outline-info'>info</button>");
+        $("<td width='10%'></td>").append(detailBtn).appendTo(str);
+
+        detailBtn.on("click", function() {
+            let title = info[i].title;
+            let data = info[i];  // sheetData参照が不要なら info[i] を直接利用
+
+            let bpm = data.bpm || "null";
+            let notes = data.notes || 0;
+            let total = data.total || 0;
+            let ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
+
+            $("#modalContent").html(
+                "<p style='font-size:16px; color:#00aaff;'><b>" + title + "</b></p>" +
+                "<p><b>BPM:</b> " + bpm + "</p>" +
+                "<p><b>Notes:</b> " + notes + "</p>" +
+                "<p><b>Total:</b> " + total + "</p>" +
+                "<p><b>Total / Notes:</b> " + ratio + "</p>"
+            );
+
+            var modal = new bootstrap.Modal(document.getElementById('detailModal'));
+            modal.show();
+        });
+
+        str.appendTo(obj);
+        count++;
+    }
+
+    if (obj_sep != null) {
+        obj_sep.html("<td colspan='7'><b>" + mark + x + " (" + count + "譜面)</b></td>");
+    }
+
+    obj.hide().fadeIn(800);
+}
+</script>
+</div>
+
 <!-- 詳細モーダル -->
 <div class="modal fade" id="detailModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content bg-dark text-light">
       <div class="modal-header border-info">
-        <h5 class="modal-title">information</h5>
+        <h5 class="modal-title" id="modalTitle">information</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="modalContent">
-      </div>
+      <div class="modal-body" id="modalContent"></div>
     </div>
   </div>
 </div>
