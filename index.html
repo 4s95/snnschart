@@ -160,19 +160,22 @@
                     detailTd.appendTo(str);
 
 detailBtn.on("click", function () {
-    var title = info[i].title;
+    var title = info[i].title;   // 曲名
     var data = sheetData[info[i].md5];
 
     if (!data) {
-        $("#modalContent").html("<p>データがありません</p>");
+        $("#modalContent").html(
+            "<p><b>Title:</b> " + title + "</p>" +
+            "<p>データがありません</p>"
+        );
     } else {
-
         var bpm = data.bpm || "null";
         var notes = data.notes || 0;
         var total = data.total || 0;
         var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
 
         $("#modalContent").html(
+            "<p style='font-size:16px; color:#00aaff;'><b>" + title + "</b></p>" +
             "<p><b>BPM:</b> " + bpm + "</p>" +
             "<p><b>Notes:</b> " + notes + "</p>" +
             "<p><b>Total:</b> " + total + "</p>" +
@@ -183,6 +186,7 @@ detailBtn.on("click", function () {
     var modal = new bootstrap.Modal(document.getElementById('detailModal'));
     modal.show();
 });
+
 
     $("#modalContent").html(
         "<p><b>BPM:</b> " + bpm + "</p>" +
