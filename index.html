@@ -126,7 +126,7 @@
 
                 obj.html("");
 
-               $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>詳細</th></tr></thead><tbody>").appendTo(obj);
+               $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>info</th></tr></thead><tbody>").appendTo(obj);
 
                 var obj_sep = null;
                 for (let i = 0; i < info.length; i++) {
@@ -155,7 +155,7 @@
                     $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
 
                     // 詳細ボタン
-                    var detailBtn = $("<button class='btn btn-sm btn-outline-info'>詳細</button>");
+                    var detailBtn = $("<button class='btn btn-sm btn-outline-info'>info</button>");
                     var detailTd = $("<td width='5%'></td>").append(detailBtn);
                     detailTd.appendTo(str);
 
