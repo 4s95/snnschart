@@ -31,17 +31,32 @@ body { background-color: #121212 !important; }
 
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
 .rainbow-text {
   font-weight: bold;
-  font-size: 16px;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  font-size: 24px;
+
+  /* 虹グラデーション */
+  background: linear-gradient(
+    90deg,
+    red, orange, yellow, green, blue, indigo, violet,
+    red, orange, yellow, green, blue, indigo, violet
+  );
+
+  /* グラデーション幅を広くしてスムーズにループ */
   background-size: 200% 100%;
+
+  /* 文字にグラデーションを適用 */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* Firefox対応 */
+  background-clip: text;
+  color: transparent;
+
+  /* 左から右に無限ループ */
   animation: rainbow 6s linear infinite;
 }
 </style>
