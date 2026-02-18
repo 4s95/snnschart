@@ -101,7 +101,7 @@
             <p>scN = stN</p>
             <p>sc?はsupernova系の譜面をまとめたものです。</p>
             <p>(2/14)<a href='https://drive.google.com/file/d/1pL3yca9pcM8BCtuJkujZScNdoG7u-RlG/view?usp=drive_link'>段位認定</a>を★★,★★+,(^^)の三段階で実装しました。</p>
-            <p>LR2は上記リンク先のファイルを本体に追加、beatorajaは本体に追加されているこの難易度表を更新すれば反映されます</p>
+            <p>LR2は上記リンク先のファイルを本体に追加、beatorajaは本体に追加されているこの難易度表を更新すれば反映されます1</p>
         </div>
 
         <!-- 難易度表本体 -->
@@ -159,29 +159,20 @@
                     var detailTd = $("<td width='10%'></td>").append(detailBtn);
                     detailTd.appendTo(str);
 
-                    detailBtn.on("click", function () {
+detailBtn.on("click", function () {
+    var title = info[i].title;
+    var data = sheetData[info[i].md5];
 
-                    var title = info[i].title;   // ← 追加
-                    var data = sheetData[info[i].md5];
+    if (!data) {
+        $("#modalContent").html("<p>データがありません</p>");
+    } else {
 
-                    if (!data) {
-
-                        $("#modalContent").html(
-                        "<p><b>Title:</b> " + title + "</p>" +
-                        "<hr>" +
-                        "<p>データがありません</p>"
-                         ); }
-
-                    else {
-
-                        var bpm = data.bpm || "null";
-                        var notes = data.notes || 0;
-                        var total = data.total || 0;
-                        var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
+        var bpm = data.bpm || "null";
+        var notes = data.notes || 0;
+        var total = data.total || 0;
+        var ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
 
         $("#modalContent").html(
-            "<p style='font-size:18px; color:#00aaff;'><b>" + title + "</b></p>" +
-            "<hr>" +
             "<p><b>BPM:</b> " + bpm + "</p>" +
             "<p><b>Notes:</b> " + notes + "</p>" +
             "<p><b>Total:</b> " + total + "</p>" +
