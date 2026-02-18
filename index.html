@@ -149,14 +149,14 @@
                     // Artist
                     $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
                     // DLリンク
-                    $("<td width='10%'><a href='" + info[i].url + "' target='_blank'>DL</a></td>").appendTo(str);
-                    $("<td width='10%'><a href='" + info[i].url_diff + "' target='_blank'>DL</a></td>").appendTo(str);
+                    $("<td width='5%'><a href='" + info[i].url + "' target='_blank'>DL</a></td>").appendTo(str);
+                    $("<td width='5%'><a href='" + info[i].url_diff + "' target='_blank'>DL</a></td>").appendTo(str);
                     // Comment
                     $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
 
                     // 詳細ボタン
                     var detailBtn = $("<button class='btn btn-sm btn-outline-info'>info</button>");
-                    var detailTd = $("<td width='5%'></td>").append(detailBtn);
+                    var detailTd = $("<td width='10%'></td>").append(detailBtn);
                     detailTd.appendTo(str);
 
                     detailBtn.on("click", function () {
