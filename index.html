@@ -84,14 +84,22 @@ body { background-color: #121212 !important; }
 
 <script type="text/javascript">
 $(document).ready(function () {
+
     $.getJSON($("meta[name=bmstable]").attr("content"), function (header) {
         $.getJSON(header.data_url, function (information) {
             makeBMSTable(information, header.symbol);
         });
     });
+
+    // 🔥 モーダル閉じたら動画停止（中身をリセット）
+    $('#detailModal').on('hidden.bs.modal', function () {
+        $("#modalContent").html("");
+    });
+
 });
 
 function makeBMSTable(info, mark) {
+
     var x = "";
     var count = 0;
     var obj = $("#table_int");
@@ -100,52 +108,124 @@ function makeBMSTable(info, mark) {
     $("<thead class='table-dark'><tr><th>Level</th><th>Title</th><th>Artist</th><th>本体</th><th>差分</th><th>Comment</th><th>info</th></tr></thead><tbody>").appendTo(obj);
 
     var obj_sep = null;
+
     for (let i = 0; i < info.length; i++) {
+
         if (x != info[i].level) {
             if (obj_sep != null) {
                 obj_sep.html("<td colspan='7'><b>" + mark + x + " (" + count + "譜面)</b></td>");
             }
-            obj_sep = $("<tr class='level-separator' id='" + mark + info[i].level + "'></tr>");
+            obj_sep = $("<tr class='level-separator'></tr>");
             obj_sep.appendTo(obj);
             count = 0;
             x = info[i].level;
         }
 
         var str = $("<tr></tr>");
+
         $("<td width='5%'>" + mark + x + "</td>").appendTo(str);
         $("<td width='25%'><a href='http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5=" + info[i].md5 + "' target='_blank'>" + info[i].title + "</a></td>").appendTo(str);
         $("<td width='25%'>" + info[i].artist + "</td>").appendTo(str);
         $("<td width='5%'><a href='" + info[i].url + "' target='_blank'>DL</a></td>").appendTo(str);
         $("<td width='5%'><a href='" + info[i].url_diff + "' target='_blank'>DL</a></td>").appendTo(str);
-        $("<td width='25%'>" + info[i].comment + "</td>").appendTo(str);
+        $("<td width='25%'>" + (info[i].comment || "") + "</td>").appendTo(str);
 
-        // infoボタン
         let detailBtn = $("<button class='btn btn-sm btn-outline-info'>info</button>");
         $("<td width='10%'></td>").append(detailBtn).appendTo(str);
 
+        detailBtn.data("sheet", info[i]);
+
         detailBtn.on("click", function() {
-            let title = info[i].title;
-            let data = info[i];  // sheetData参照が不要なら info[i] を直接利用
+
+            let data = $(this).data("sheet");
 
             let bpm = data.bpm || "null";
             let notes = data.notes || 0;
             let total = data.total || 0;
             let ratio = notes > 0 ? (total / notes).toFixed(3) : "-";
-            let otherTable = info[i].other_table;
+            let otherTable = data.other_table || "-";
+            let youtube = data.youtube || "";
 
-            let titleHtml = otherTable 
-    ? "<b class='rainbow-text'>" + title + "</b>" 
-    : "<b style='color:#00aaff; font-weight:bold;'>" + title + "</b>";
+            //YouTube処理
+            let youtubeHtml = "";
 
-$("#modalContent").html(
-    "<p style='font-size:16px;'>" + titleHtml + "</p>" +
-    "<p><b>BPM:</b> " + bpm + "</p>" +
-    "<p><b>Notes:</b> " + notes + "</p>" +
-    "<p><b>Total:</b> " + total + "</p>" +
-    "<p><b>Total / Notes:</b> " + ratio + "</p>" +
-    "<p><b>other table:</b> " + otherTable + "</p>"
-);
+            if (youtube) {
 
+                let videoId = "";
+
+                if (youtube.includes("watch?v=")) {
+                    videoId = youtube.split("watch?v=")[1].split("&")[0];
+                } else if (youtube.includes("youtu.be/")) {
+                    videoId = youtube.split("youtu.be/")[1].split("?")[0];
+                }
+
+                if (videoId) {
+
+                    let thumbnail = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
+
+                    youtubeHtml = `
+                        <div class="youtube-thumb mt-3"
+                             data-video="${videoId}"
+                             style="position:relative; cursor:pointer;">
+
+                            <img src="${thumbnail}" class="img-fluid rounded">
+
+                            <div style="
+                                position:absolute;
+                                top:50%;
+                                left:50%;
+                                transform:translate(-50%,-50%);
+                                width:68px;
+                                height:48px;
+                                background:rgba(0,0,0,0.6);
+                                border-radius:12px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;">
+                                <div style="
+                                    width:0;
+                                    height:0;
+                                    border-left:18px solid white;
+                                    border-top:12px solid transparent;
+                                    border-bottom:12px solid transparent;">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            let titleHtml = otherTable !== "-" 
+                ? "<b class='rainbow-text'>" + data.title + "</b>"
+                : "<b style='color:#00aaff; font-weight:bold;'>" + data.title + "</b>";
+
+            $("#modalContent").html(
+                "<p style='font-size:16px;'>" + titleHtml + "</p>" +
+                "<p><b>BPM:</b> " + bpm + "</p>" +
+                "<p><b>Notes:</b> " + notes + "</p>" +
+                "<p><b>Total:</b> " + total + "</p>" +
+                "<p><b>Total / Notes:</b> " + ratio + "</p>" +
+                "<p><b>other table:</b> " + otherTable + "</p>" +
+                youtubeHtml
+            );
+
+            //サムネクリックで再生
+            setTimeout(function() {
+                $(".youtube-thumb").on("click", function() {
+
+                    let videoId = $(this).data("video");
+
+                    $(this).replaceWith(`
+                        <div class="ratio ratio-16x9 mt-3">
+                            <iframe
+                                src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+                                allow="autoplay; encrypted-media"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    `);
+                });
+            }, 50);
 
             var modal = new bootstrap.Modal(document.getElementById('detailModal'));
             modal.show();
