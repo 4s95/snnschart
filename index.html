@@ -91,7 +91,7 @@ $(document).ready(function () {
         });
     });
 
-    // 🔥 モーダル閉じたら動画停止（中身をリセット）
+    // ✅ モーダル閉じたら動画停止（iframe削除）
     $('#detailModal').on('hidden.bs.modal', function () {
         $("#modalContent").html("");
     });
@@ -146,8 +146,8 @@ function makeBMSTable(info, mark) {
             let otherTable = data.other_table || "-";
             let youtube = data.youtube || "";
 
-            //YouTube処理
-            let youtubeHtml = "";
+            // ✅ YouTube埋め込み（自動再生なし）
+            let youtubeEmbed = "";
 
             if (youtube) {
 
@@ -160,36 +160,12 @@ function makeBMSTable(info, mark) {
                 }
 
                 if (videoId) {
-
-                    let thumbnail = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
-
-                    youtubeHtml = `
-                        <div class="youtube-thumb mt-3"
-                             data-video="${videoId}"
-                             style="position:relative; cursor:pointer;">
-
-                            <img src="${thumbnail}" class="img-fluid rounded">
-
-                            <div style="
-                                position:absolute;
-                                top:50%;
-                                left:50%;
-                                transform:translate(-50%,-50%);
-                                width:68px;
-                                height:48px;
-                                background:rgba(0,0,0,0.6);
-                                border-radius:12px;
-                                display:flex;
-                                align-items:center;
-                                justify-content:center;">
-                                <div style="
-                                    width:0;
-                                    height:0;
-                                    border-left:18px solid white;
-                                    border-top:12px solid transparent;
-                                    border-bottom:12px solid transparent;">
-                                </div>
-                            </div>
+                    youtubeEmbed = `
+                        <div class="ratio ratio-16x9 mt-3">
+                            <iframe
+                                src="https://www.youtube.com/embed/${videoId}"
+                                allowfullscreen>
+                            </iframe>
                         </div>
                     `;
                 }
@@ -206,26 +182,8 @@ function makeBMSTable(info, mark) {
                 "<p><b>Total:</b> " + total + "</p>" +
                 "<p><b>Total / Notes:</b> " + ratio + "</p>" +
                 "<p><b>other table:</b> " + otherTable + "</p>" +
-                youtubeHtml
+                youtubeEmbed
             );
-
-            //サムネクリックで再生
-            setTimeout(function() {
-                $(".youtube-thumb").on("click", function() {
-
-                    let videoId = $(this).data("video");
-
-                    $(this).replaceWith(`
-                        <div class="ratio ratio-16x9 mt-3">
-                            <iframe
-                                src="https://www.youtube.com/embed/${videoId}?autoplay=1"
-                                allow="autoplay; encrypted-media"
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                    `);
-                });
-            }, 50);
 
             var modal = new bootstrap.Modal(document.getElementById('detailModal'));
             modal.show();
